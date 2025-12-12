@@ -179,6 +179,14 @@ Seções:
 | **.data**   | Variáveis globais inicializadas     |
 | **.bss**    | Variáveis globais não inicializadas |
 
+#### 🛠 Como Compilar
+
+Você precisa de um cross-compiler i686-elf:
+```sh 
+i686-elf-gcc -c boot.s -o boot.o
+i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+i686-elf-gcc -T linker.ld -o myos.bin -ffreestanding -O2 -nostdlib boot.o kernel.o
+```
 
 ### 🔥 4. Criando uma imagem ISO bootável com GRUB
 
