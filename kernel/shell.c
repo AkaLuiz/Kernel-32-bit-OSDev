@@ -28,7 +28,7 @@ static void shell_execute(void) {
     terminal_putchar('\n');
 
     if (strcmp(shell_buffer, "help") == 0) {
-        terminal_writestring("Commands: help, clear, echo\n");
+        terminal_writestring("Commands: help, clear, echo, kernel\n");
     } 
     else if (strcmp(shell_buffer, "clear") == 0) {
         terminal_initialize();
@@ -39,6 +39,9 @@ static void shell_execute(void) {
     } 
     else if (strcmp(shell_buffer, "echo") == 0) {
         terminal_putchar('\n');
+    } 
+    else if (strcmp(shell_buffer, "kernel") == 0) {
+        terminal_writestring("myos 0.0.1");
     } 
     else {
         terminal_writestring("Comando desconhecido\n");

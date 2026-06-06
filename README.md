@@ -11,10 +11,13 @@ Ele demonstra como um kernel mínimo pode ser carregado por um bootloader compat
 
 ```vbnet
 /
+├── build.sh     → Script que compila, linka e gera a ISO em build/
 ├── boot.s       → Código Assembly com o header Multiboot e o ponto de entrada (_start)
-├── kernel.c     → Kernel mínimo escrito em C
 ├── linker.ld    → Script do linker que organiza as seções na memória
-└── grub.cfg     → Configuração do GRUB para criar ISO bootável
+├── grub.cfg     → Configuração base do GRUB para criar ISO bootável
+├── kernel/      → Código-fonte do kernel em C
+├── isodir/      → Estrutura usada para montar a ISO
+└── build/       → Artefatos gerados: objetos, kernel e imagem ISO
 
 ```
 
@@ -181,34 +184,36 @@ Seções:
 
 #### 🛠 Como Compilar
 
-Você precisa de um cross-compiler i686-elf:
-```sh 
-i686-elf-gcc -c boot.s -o boot.o
-i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-i686-elf-gcc -T linker.ld -o myos.bin -ffreestanding -O2 -nostdlib boot.o kernel.o
+Você precisa de um cross-compiler `i686-elf` e do `grub-mkrescue`.
+
+O projeto agora possui um `build.sh` que automatiza todo o processo:
+
+- compila os arquivos do kernel
+- linka o binário `myos.bin`
+- copia os arquivos necessários para `isodir/`
+- gera a ISO final em `build/myos.iso`
+
+```sh
+./build.sh
+```
+
+#### 📁 Resultado do build
+
+```markdown
+build/
+├── kernel.o
+├── terminal.o
+├── keyboard.o
+├── shell.o
+├── util.o
+├── myos.bin
+└── myos.iso
+
 ```
 
 ### 🔥 4. Criando uma imagem ISO bootável com GRUB
 
-Depois de compilar o kernel para myos.bin, você pode gerar uma imagem .iso inicializável.
-
-#### 📁 Estrutura de diretórios
-
-```sh
-mkdir -p isodir/boot/grub
-cp myos.bin isodir/boot/myos.bin
-cp grub.cfg isodir/boot/grub/grub.cfg
-```
-#### Resultado:
-
-```markdown
-isodir/
-└── boot/
-    ├── myos.bin
-    └── grub/
-        └── grub.cfg
-
-```
+O `build.sh` já prepara a estrutura `isodir/` e executa o `grub-mkrescue` automaticamente. A pasta `isodir/` funciona como área de montagem da ISO.
 
 #### 📝 Arquivo grub.cfg
 
@@ -227,5 +232,5 @@ grub-mkrescue -o myos.iso isodir
 #### ▶️ Testando a ISO
 
 ```
-qemu-system-i386 -cdrom myos.iso
+qemu-system-i386 -cdrom build/myos.iso
 ```
