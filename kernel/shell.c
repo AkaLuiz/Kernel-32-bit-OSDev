@@ -41,7 +41,7 @@ static void shell_execute(void) {
         terminal_putchar('\n');
     } 
     else if (strcmp(shell_buffer, "kernel") == 0) {
-        terminal_writestring("myos 0.0.1");
+        terminal_writestring("myos 0.0.1\n");
     } 
     else {
         terminal_writestring("Comando desconhecido\n");

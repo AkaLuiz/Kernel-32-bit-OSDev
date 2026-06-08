@@ -11,7 +11,7 @@ Ele demonstra como um kernel mínimo pode ser carregado por um bootloader compat
 
 ```vbnet
 /
-├── build.sh     → Script que compila, linka e gera a ISO em build/
+├── Makefile     → Automação de build com make para compilar, linkar e gerar a ISO
 ├── boot.s       → Código Assembly com o header Multiboot e o ponto de entrada (_start)
 ├── linker.ld    → Script do linker que organiza as seções na memória
 ├── grub.cfg     → Configuração base do GRUB para criar ISO bootável
@@ -186,21 +186,22 @@ Seções:
 
 Você precisa de um cross-compiler `i686-elf` e do `grub-mkrescue`.
 
-O projeto agora possui um `build.sh` que automatiza todo o processo:
+O projeto agora usa um `Makefile`, uma abordagem mais padronizada e profissional para automatizar o processo de build.
 
-- compila os arquivos do kernel
-- linka o binário `myos.bin`
-- copia os arquivos necessários para `isodir/`
-- gera a ISO final em `build/myos.iso`
+- `make` compila os arquivos do kernel e gera o binário `build/myos.bin`
+- `make iso` copia os arquivos necessários para `isodir/` e gera a ISO final `build/myos.iso`
+- `make clean` remove os artefatos gerados
 
 ```sh
-./build.sh
+make
+make iso
 ```
 
 #### 📁 Resultado do build
 
 ```markdown
 build/
+├── boot.o
 ├── kernel.o
 ├── terminal.o
 ├── keyboard.o
@@ -213,7 +214,7 @@ build/
 
 ### 🔥 4. Criando uma imagem ISO bootável com GRUB
 
-O `build.sh` já prepara a estrutura `isodir/` e executa o `grub-mkrescue` automaticamente. A pasta `isodir/` funciona como área de montagem da ISO.
+O `Makefile` já prepara o fluxo de geração da ISO e executa o `grub-mkrescue` automaticamente. A pasta `isodir/` funciona como área de montagem da ISO.
 
 #### 📝 Arquivo grub.cfg
 
@@ -224,6 +225,14 @@ menuentry "myos" {
 ```
 
 #### ⚙️ Gerando a ISO
+
+Com o fluxo atual do projeto:
+
+```sh
+make iso
+```
+
+O comando executado internamente continua equivalente a:
 
 ```
 grub-mkrescue -o myos.iso isodir
