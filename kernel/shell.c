@@ -1,6 +1,7 @@
 #include "shell.h"
 #include "terminal.h"
 #include "util.h"
+#include "pong.h"
 
 #define SHELL_MAX_INPUT 128
 
@@ -41,10 +42,14 @@ static void shell_execute(void) {
         terminal_putchar('\n');
     } 
     else if (strcmp(shell_buffer, "kernel") == 0) {
-        terminal_writestring("myos 0.0.1\n");
+        terminal_writestring("myos v0.0.1\n");
+    } 
+    else if (strcmp(shell_buffer, "pong") == 0) {
+        terminal_initialize();
+        pong();
     } 
     else {
-        terminal_writestring("Comando desconhecido\n");
+        terminal_writestring("Comando desconhecido\nTente 'help' para conhecer os comandos existentes!\n");
     } 
 
     shell_pos = 0;

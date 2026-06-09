@@ -4,7 +4,7 @@
 
 void kernel_main(void) {
     terminal_initialize();
-    terminal_writestring("MeuOS v0.1\n");
+    terminal_writestring("MeuOS v0.0.1\n");
 
     shell_init();
 

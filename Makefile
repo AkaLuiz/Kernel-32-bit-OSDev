@@ -16,7 +16,8 @@ OBJS := \
 	$(BUILD_DIR)/terminal.o \
 	$(BUILD_DIR)/keyboard.o \
 	$(BUILD_DIR)/shell.o \
-	$(BUILD_DIR)/util.o
+	$(BUILD_DIR)/util.o \
+	$(BUILD_DIR)/pong.o
 
 .PHONY: all iso clean
 
@@ -43,6 +44,9 @@ $(BUILD_DIR)/shell.o: $(KERNEL_DIR)/shell.c | $(BUILD_DIR)
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 $(BUILD_DIR)/util.o: $(KERNEL_DIR)/util.c | $(BUILD_DIR)
+	$(CC) -c $< -o $@ $(CFLAGS)
+
+$(BUILD_DIR)/pong.o: $(KERNEL_DIR)/pong.c | $(BUILD_DIR)
 	$(CC) -c $< -o $@ $(CFLAGS)
 
 $(BIN): $(OBJS) linker.ld
