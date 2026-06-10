@@ -29,7 +29,7 @@ static void shell_execute(void) {
     terminal_putchar('\n');
 
     if (strcmp(shell_buffer, "help") == 0) {
-        terminal_writestring("Commands: help, clear, echo, kernel\n");
+        terminal_writestring("Commands: help, clear, echo, kernel, pong\n");
     } 
     else if (strcmp(shell_buffer, "clear") == 0) {
         terminal_initialize();
