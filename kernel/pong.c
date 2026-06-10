@@ -1,18 +1,19 @@
 #include "terminal.h"
 #include "keyboard.h"
 
-size_t xPlayerUm = 15;
-size_t yPlayerUm = VGA_HEIGHT/2;
-size_t xPlayerDois = VGA_WIDTH-15;
-size_t yPlayerDois = VGA_HEIGHT/2;
+int xPlayerUm = 15;
+int yPlayerUm = VGA_HEIGHT/2;
+int xPlayerDois = VGA_WIDTH-15;
+int yPlayerDois = VGA_HEIGHT/2;
 int xBolinha = VGA_WIDTH/2;
 int yBolinha = VGA_HEIGHT/2;
-size_t contador = 0;
+int contador = 0;
 int umX = 1;
 int umY = 1;
 
+
 void pong(){
-    
+    disable_cursor();
     while(1){
         char c = keyboard_getchar();
         terminal_putentryat('o', 2, xBolinha,yBolinha);
@@ -71,6 +72,7 @@ void pong(){
         }
         if(c == 'b'){
             terminal_initialize();
+            enable_cursor();
             break;
         }
     }

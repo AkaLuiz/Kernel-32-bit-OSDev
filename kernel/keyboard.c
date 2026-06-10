@@ -8,6 +8,24 @@ static inline uint8_t inb(uint16_t port) {
     return ret; 
 }
 
+static inline void outb(unsigned short port, unsigned char val) {
+    __asm__ volatile ("outb %0, %1" : : "a"(val), "Nd"(port));
+}
+
+void disable_cursor(void) {
+    outb(0x3D4, 0x0A);
+    outb(0x3D5, 0x20);
+}
+
+void enable_cursor(void) {
+    outb(0x3D4, 0x0A);
+    outb(0x3D5, 14);
+
+    outb(0x3D4, 0x0B);
+    outb(0x3D5, 15);
+}
+
+
 /* A simple map of scancodes -> characters */
 static const char scancode_table[128] = {
     0,  27, '1','2','3','4','5','6','7','8','9','0','-','=', '\b',
