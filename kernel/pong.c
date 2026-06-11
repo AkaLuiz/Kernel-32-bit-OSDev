@@ -1,18 +1,18 @@
 #include "terminal.h"
 #include "keyboard.h"
 
-int xPlayerUm = 15;
-int yPlayerUm = VGA_HEIGHT/2;
-int xPlayerDois = VGA_WIDTH-15;
-int yPlayerDois = VGA_HEIGHT/2;
-int xBolinha = VGA_WIDTH/2;
-int yBolinha = VGA_HEIGHT/2;
-int contador = 0;
-int umX = 1;
-int umY = 1;
-
-
 void pong(){
+
+    int xPlayerUm = 15;
+    int yPlayerUm = VGA_HEIGHT/2;
+    int xPlayerDois = VGA_WIDTH-15;
+    int yPlayerDois = VGA_HEIGHT/2;
+    int xBolinha = VGA_WIDTH/2;
+    int yBolinha = VGA_HEIGHT/2;
+    int contador = 0;
+    int umX = 1;
+    int umY = 1;
+
     disable_cursor();
     while(1){
         char c = keyboard_getchar();
@@ -26,14 +26,14 @@ void pong(){
         
         contador++;
 
-        if (contador >= 70000) {
+        if (contador >= 50000) {
             terminal_putentryat(' ', 2, xBolinha, yBolinha);
 
-            if(yBolinha >= VGA_HEIGHT || yBolinha <= 0){
+            if(yBolinha >= VGA_HEIGHT -1 || yBolinha <= 0){
                 umY = -umY;
             }
 
-            if(xBolinha >= VGA_WIDTH || xBolinha <= 0){
+            if(xBolinha >= VGA_WIDTH -1 || xBolinha <= 0){
                 umX = -umX;
             }
 
@@ -55,20 +55,20 @@ void pong(){
         }
 
         if(c == 'w' && yPlayerUm > 2){
+            terminal_putentryat(' ', 3, xPlayerUm, yPlayerUm);
             yPlayerUm--;
-            terminal_initialize();
         }
         if(c == 's' && VGA_HEIGHT > yPlayerUm+1 ){
+            terminal_putentryat(' ', 3, xPlayerUm, yPlayerUm-2);
             yPlayerUm++;
-            terminal_initialize();
         }
         if(c == 'i' && yPlayerDois > 2){
+            terminal_putentryat(' ', 4, xPlayerDois, yPlayerDois);
             yPlayerDois--;
-            terminal_initialize();
         }
         if(c == 'k' && VGA_HEIGHT > yPlayerDois+1 ){
+            terminal_putentryat(' ', 4, xPlayerDois, yPlayerDois-2);
             yPlayerDois++;
-            terminal_initialize();
         }
         if(c == 'b'){
             terminal_initialize();
