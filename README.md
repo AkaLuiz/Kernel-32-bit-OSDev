@@ -243,3 +243,9 @@ grub-mkrescue -o myos.iso isodir
 ```
 qemu-system-i386 -cdrom build/myos.iso
 ```
+
+#### ▶️ Versão MacOS para deixar a tela redimensionável
+
+```
+qemu-system-i386 -cdrom build/myos.iso -display cocoa,zoom-to-fit=on
+```

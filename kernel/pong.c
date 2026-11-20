@@ -1,5 +1,6 @@
 #include "terminal.h"
 #include "keyboard.h"
+#include "util.h"
 
 void desenhar_borda(void) {
     int cor = 7;
@@ -40,6 +41,7 @@ void pong(){
 
     terminal_putentryat('0', 5, xPlacarUm,yPlacar);
     terminal_putentryat('0', 5, xPlacarDois,yPlacar);
+    uint16_t embaixo_bolinha = terminal_getcharat(xBolinha, yBolinha);
     terminal_putentryat('o', 2, xBolinha,yBolinha);
     terminal_putentryat('|', 3, xPlayerUm,yPlayerUm);
     terminal_putentryat('|', 3, xPlayerUm,yPlayerUm-1);
@@ -47,6 +49,9 @@ void pong(){
     terminal_putentryat('|', 4, xPlayerDois,yPlayerDois);
     terminal_putentryat('|', 4, xPlayerDois,yPlayerDois-1);
     terminal_putentryat('|', 4, xPlayerDois,yPlayerDois-2);
+    terminal_column = (VGA_WIDTH/2) - (strlen("Aperte b para sair do jogo")/2);
+    terminal_row = 5;
+    terminal_writestring("Aperte b para sair do jogo");
 
     desenhar_borda();
 
@@ -56,7 +61,8 @@ void pong(){
 
         contador++;
         if (contador >= 900000) {
-            terminal_putentryat(' ', 2, xBolinha, yBolinha);
+            
+            terminal_putentryat(embaixo_bolinha & 0xFF, embaixo_bolinha >> 8, xBolinha, yBolinha);
             contador = 0;
 
             if(yBolinha >= VGA_HEIGHT -2 || yBolinha <= 0){
@@ -99,26 +105,26 @@ void pong(){
 
             xBolinha+=umX;
             yBolinha+=umY;
+            embaixo_bolinha = terminal_getcharat(xBolinha, yBolinha);
             terminal_putentryat('o', 2, xBolinha, yBolinha);
-            
         }
 
-        if(c == 'w' && yPlayerUm > 2){
+        if(c == 'w' && yPlayerUm > 3){
             terminal_putentryat(' ', 3, xPlayerUm, yPlayerUm);
             yPlayerUm--;
             terminal_putentryat('|', 3, xPlayerUm,yPlayerUm-2);
         }
-        if(c == 's' && VGA_HEIGHT > yPlayerUm+1 ){
+        if(c == 's' && VGA_HEIGHT-1 > yPlayerUm+1 ){
             terminal_putentryat(' ', 3, xPlayerUm, yPlayerUm-2);
             yPlayerUm++;
             terminal_putentryat('|', 3, xPlayerUm,yPlayerUm);
         }
-        if(c == 'i' && yPlayerDois > 2){
+        if(c == 'i' && yPlayerDois > 3){
             terminal_putentryat(' ', 4, xPlayerDois, yPlayerDois);
             yPlayerDois--;
             terminal_putentryat('|', 4, xPlayerDois,yPlayerDois-2);
         }
-        if(c == 'k' && VGA_HEIGHT > yPlayerDois+1 ){
+        if(c == 'k' && VGA_HEIGHT-1 > yPlayerDois+1 ){
             terminal_putentryat(' ', 4, xPlayerDois, yPlayerDois-2);
             yPlayerDois++;
             terminal_putentryat('|', 4, xPlayerDois,yPlayerDois);

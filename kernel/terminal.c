@@ -50,6 +50,11 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
     terminal_buffer[index] = vga_entry(c, color); 
 } 
 
+uint16_t terminal_getcharat(size_t x, size_t y){
+    const size_t index = y * VGA_WIDTH + x;
+    return terminal_buffer[index];
+}
+
 void terminal_putchar(char c) {
      if(c == '\n'){ 
         terminal_column = 0; 
