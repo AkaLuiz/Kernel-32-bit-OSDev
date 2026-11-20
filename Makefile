@@ -53,6 +53,7 @@ $(BIN): $(OBJS) linker.ld
 	$(CC) $(LDFLAGS) -o $@ $(OBJS)
 
 $(ISO): $(BIN) grub.cfg | $(BUILD_DIR)
+	mkdir -p $(ISO_DIR)/boot/grub
 	cp $(BIN) $(ISO_DIR)/boot/myos.bin
 	cp grub.cfg $(ISO_DIR)/boot/grub/grub.cfg
 	grub-mkrescue -o $@ $(ISO_DIR)
