@@ -8,6 +8,23 @@ size_t strlen(const char* str)
 	return len;
 }
 
+void int_to_str(int number, char* buf){
+    char inv_buf[12];
+    int i = 0;
+    do {
+        inv_buf[i] = (number%10)+'0';
+        number /= 10;
+        i++;
+    } while (number > 0);
+    int j = i;
+    for(int c = 0; c < i; c++){
+        buf[c] = inv_buf[j-1];
+        j--;
+    }
+
+    buf[i] = '\0';
+}
+
 int strcmp(const char* a, const char* b) {
     while (*a && (*a == *b)) {
         a++;

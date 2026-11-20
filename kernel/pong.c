@@ -37,10 +37,16 @@ void pong(){
     int umX = 1;
     int umY = 1;
     int playerUm = 0;
+    char playerUmChar[12];
     int playerDois = 0;
+    char playerDoisChar[12];
 
-    terminal_putentryat('0', 5, xPlacarUm,yPlacar);
-    terminal_putentryat('0', 5, xPlacarDois,yPlacar);
+    terminal_column = xPlacarUm;
+    terminal_row = yPlacar;
+    terminal_writestring("0");
+    terminal_column = xPlacarDois;
+    terminal_row = yPlacar;
+    terminal_writestring("0");
     uint16_t embaixo_bolinha = terminal_getcharat(xBolinha, yBolinha);
     terminal_putentryat('o', 2, xBolinha,yBolinha);
     terminal_putentryat('|', 3, xPlayerUm,yPlayerUm);
@@ -88,9 +94,12 @@ void pong(){
             if(xBolinha > xPlayerDois){
                 xBolinha = VGA_WIDTH/2;
                 yBolinha = VGA_HEIGHT/2;
-                umY = -umY;
                 playerUm++;
-                terminal_putentryat('0'+playerUm,5,xPlacarUm,yPlacar);
+                umY = -umY;
+                terminal_column = xPlacarUm;
+                terminal_row = yPlacar;
+                int_to_str(playerUm, playerUmChar);
+                terminal_writestring(playerUmChar);
 
             }
             
@@ -99,7 +108,10 @@ void pong(){
                 yBolinha = VGA_HEIGHT/2;
                 playerDois++;
                 umX = -umX;
-                terminal_putentryat('0'+playerDois,5,xPlacarDois,yPlacar);
+                terminal_column = xPlacarDois;
+                terminal_row = yPlacar;
+                int_to_str(playerDois, playerDoisChar);
+                terminal_writestring(playerDoisChar);
                 contador = -1000000;
             }
 
